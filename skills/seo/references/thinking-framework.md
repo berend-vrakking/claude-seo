@@ -27,8 +27,8 @@ Collect signals without interpreting them. For a website audit this means:
 
 - Raw HTML + rendered HTML (via `"${CLAUDE_PLUGIN_ROOT}/scripts/claude-seo" run render_page.py`)
 - Schema.org markup actually present (via `seo-schema`)
-- SERP visibility for the site's published topics (via `seo-dataforseo` /
-  Google APIs when available)
+- SERP visibility for the site's published topics (via `seo-ahrefs`,
+  `seo-dataforseo` or Google APIs when available)
 - Backlink + brand-mention landscape (via `seo-backlinks`)
 - Core Web Vitals field data from CrUX (via `"${CLAUDE_PLUGIN_ROOT}/scripts/claude-seo" run pagespeed_check.py`)
 - AI-search citation patterns (via `seo-geo`)
@@ -127,7 +127,7 @@ Wire the validated recommendations into an executable sequence:
 - Which recommendations can be **parallelized**? Surface that to the
   user so they can dispatch them.
 - Which recommendations need a **tool that's not yet installed** (e.g.
-  Firecrawl for site crawl, DataForSEO for SERP data)? Flag the gap.
+  Firecrawl for site crawl, Ahrefs for SERP and ranking data)? Flag the gap.
 
 **Discipline:** the action plan is a dependency graph, not a list. If
 two recommendations cannot be done in either order, say so.

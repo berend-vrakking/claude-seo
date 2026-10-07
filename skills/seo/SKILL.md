@@ -50,7 +50,7 @@ extension is also installable (see "Optional Extensions" below).
 | `/seo maps [command] [args]` | Maps intelligence (geo-grid, GBP audit, reviews, competitors) |
 | `/seo hreflang [url]` | Hreflang/i18n SEO audit and generation |
 | `/seo google [command] [url]` | Google SEO APIs (GSC, PageSpeed, CrUX, Indexing, GA4) |
-| `/seo backlinks <url>` | Backlink profile analysis (free: Moz, Bing, CC; premium: DataForSEO) |
+| `/seo backlinks <url>` | Backlink profile analysis (primary: Ahrefs; free: Moz, Bing, CC; optional: DataForSEO) |
 | `/seo cluster <seed-keyword>` | SERP-based semantic clustering and content architecture |
 | `/seo sxo <url>` | Search Experience Optimization: page-type analysis, user stories, personas |
 | `/seo drift baseline <url>` | Capture SEO baseline for change monitoring |
@@ -87,16 +87,17 @@ When the user invokes `/seo audit`, delegate to subagents in parallel:
 4. If Matomo credentials detected (`"${CLAUDE_PLUGIN_ROOT}/scripts/claude-seo" run matomo_auth.py --check`), also spawn seo-matomo agent (alternative or complement to seo-google's GA4 reports)
 5. If local business detected, also spawn seo-local agent
 6. If local business detected AND DataForSEO MCP available, also spawn seo-maps agent
-7. If backlink APIs detected (`"${CLAUDE_PLUGIN_ROOT}/scripts/claude-seo" run backlinks_auth.py --check`), also spawn seo-backlinks agent
-8. If Firecrawl MCP available, use `firecrawl_map` to discover all site URLs before analysis
-9. If content strategy signals detected (blog, pillar pages, topic clusters), also spawn seo-cluster agent
-10. If e-commerce detected, also spawn seo-ecommerce agent
-11. If drift baseline exists for this URL (`"${CLAUDE_PLUGIN_ROOT}/scripts/claude-seo" run drift_history.py <url>`), also spawn seo-drift agent
-12. Always include seo-sxo in full audits (search experience applies to all sites)
-13. Collect results and generate unified report with SEO Health Score (0-100)
-14. **Synthesize via the 10-principle framework** (see "Synthesis Methodology" below), walk PERCEIVE → ANALYZE → VALIDATE → ACT before bucketing findings into Critical / High / Medium / Low
-15. Create prioritized action plan with dependency sequencing + falsifiability per recommendation
-16. **Offer PDF report**: "Generate a professional PDF report? Use `/seo google report full`"
+7. If the Ahrefs MCP is connected or backlink APIs are detected (`"${CLAUDE_PLUGIN_ROOT}/scripts/claude-seo" run backlinks_auth.py --check`), also spawn seo-backlinks agent
+8. If the Ahrefs MCP is connected (`mcp__ahrefs__*` tools available), also spawn seo-ahrefs agent for authority, rankings and competitors, with a unit budget (see `references/ahrefs.md`)
+9. If Firecrawl MCP available, use `firecrawl_map` to discover all site URLs before analysis
+10. If content strategy signals detected (blog, pillar pages, topic clusters), also spawn seo-cluster agent
+11. If e-commerce detected, also spawn seo-ecommerce agent
+12. If drift baseline exists for this URL (`"${CLAUDE_PLUGIN_ROOT}/scripts/claude-seo" run drift_history.py <url>`), also spawn seo-drift agent
+13. Always include seo-sxo in full audits (search experience applies to all sites)
+14. Collect results and generate unified report with SEO Health Score (0-100)
+15. **Synthesize via the 10-principle framework** (see "Synthesis Methodology" below), walk PERCEIVE → ANALYZE → VALIDATE → ACT before bucketing findings into Critical / High / Medium / Low
+16. Create prioritized action plan with dependency sequencing + falsifiability per recommendation
+17. **Offer PDF report**: "Generate a professional PDF report? Use `/seo google report full`"
 
 For individual commands, load the relevant sub-skill directly.
 After any analysis command completes, offer to generate a PDF report via `"${CLAUDE_PLUGIN_ROOT}/scripts/claude-seo" run google_report.py`.
@@ -190,6 +191,7 @@ Do NOT show the footer after:
 - `/seo hreflang` (quick validation, too small)
 - `/seo competitor-pages` (page generation step)
 - `/seo programmatic` (quick analysis)
+- `/seo ahrefs` (data fetching utility)
 - `/seo dataforseo` (data fetching utility)
 - `/seo image-gen` (asset generation)
 - Context intake questions (before analysis starts)
@@ -255,7 +257,7 @@ orchestrate itself, so it is not enumerated below.
 14. **seo-local** -- Local SEO (GBP, NAP, citations, reviews, local schema, multi-location)
 15. **seo-maps** -- Maps intelligence (geo-grid, GBP audit, reviews, competitor radius)
 16. **seo-google** -- Google SEO APIs (GSC, PageSpeed, CrUX, Indexing API, GA4)
-17. **seo-backlinks** -- Backlink profile analysis (free: Moz, Bing, CC; premium: DataForSEO)
+17. **seo-backlinks** -- Backlink profile analysis (primary: Ahrefs; free: Moz, Bing, CC; optional: DataForSEO)
 18. **seo-cluster** -- SERP-based semantic clustering (contributed by Lutfiya Miller)
 19. **seo-sxo** -- Search Experience Optimization (contributed by Florian Schmitz)
 20. **seo-drift** -- SEO drift monitoring (contributed by Dan Colta)
@@ -301,7 +303,7 @@ For parallel analysis during audits:
 - `seo-local` -- GBP signals, NAP consistency, reviews, local schema, industry-specific local factors (conditional: spawned when Local Service detected)
 - `seo-maps` -- Geo-grid rank tracking, GBP audit, review intelligence, competitor radius mapping (conditional: spawned when Local Service detected AND DataForSEO MCP available)
 - `seo-google` -- CWV field data, URL indexation status, organic traffic trends (conditional: spawned when Google API credentials detected)
-- `seo-backlinks` -- Backlink profile data: DA/PA, referring domains, anchor text, toxic links (conditional: spawned when Moz/Bing API keys detected or always for CC domain-level metrics)
+- `seo-backlinks` -- Backlink profile data: DR/DA, referring domains, anchor text, toxic links (conditional: spawned when Ahrefs is connected or Moz/Bing API keys detected, or always for CC domain-level metrics)
 - `seo-cluster` -- Semantic clustering analysis (conditional: content strategy detected)
 - `seo-sxo` -- Page-type mismatch, user stories, persona scoring (always in full audits)
 - `seo-drift` -- Baseline comparison (conditional: drift baseline exists for URL)

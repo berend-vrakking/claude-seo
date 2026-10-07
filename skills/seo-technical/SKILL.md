@@ -230,6 +230,17 @@ behind every score.
 ### Medium Priority (fix within 1 month)
 ### Low Priority (backlog)
 
+## Ahrefs Integration (Optional)
+
+The crawl, Lighthouse and stack checks here stay on the plugin's own fetchers
+(and DataForSEO when installed); Ahrefs has no Lighthouse or tech-stack data.
+Where Ahrefs is connected (rules: `${CLAUDE_PLUGIN_ROOT}/skills/seo/references/ahrefs.md`), two
+checks are worth adding: `mcp__ahrefs__site-explorer-broken-backlinks` (external
+links pointing at 4xx/5xx URLs: redirect candidates) and, when the site has an
+Ahrefs Site Audit project (`mcp__ahrefs__site-audit-projects`, free),
+`mcp__ahrefs__site-audit-issues` / `mcp__ahrefs__site-audit-page-explorer` as a
+second crawl to compare against (50 units per call).
+
 ## DataForSEO Integration (Optional)
 
 If DataForSEO MCP tools are available, use `on_page_instant_pages` for real page analysis (status codes, page timing, broken links, on-page checks), `on_page_lighthouse` for Lighthouse audits (performance, accessibility, SEO scores), and `domain_analytics_technologies_domain_technologies` for technology stack detection.

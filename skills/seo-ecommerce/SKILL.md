@@ -193,8 +193,12 @@ Identify mismatches between organic and Shopping visibility.
 
 ### Workflow
 
-1. Fetch organic rankings via seo-dataforseo:
-   `dataforseo_labs_google_ranked_keywords` for domain
+1. Fetch organic rankings via seo-ahrefs:
+   `mcp__ahrefs__site-explorer-organic-keywords` for the domain
+   (`select=keyword,best_position,best_position_url,volume,sum_traffic`,
+   `order_by=sum_traffic:desc`, `limit=100`; rules: `${CLAUDE_PLUGIN_ROOT}/skills/seo/references/ahrefs.md`).
+   Without Ahrefs, use seo-dataforseo `dataforseo_labs_google_ranked_keywords`
+   if installed, or skip the organic side and say so
 2. Fetch Google Shopping presence through the Merchant REST script (not an
    MCP tool; the cost-ledger key is `merchant_google_products_search`):
    `"${CLAUDE_PLUGIN_ROOT}/scripts/claude-seo" run dataforseo_merchant.py search <keyword>`
@@ -298,7 +302,8 @@ Confirmed required fields are `name`, `image`, and `offers`; use `Offer`, not `A
 | **seo-schema** | Delegates Product schema generation; reuses validation logic |
 | **seo-images** | Product image audit (alt text, format, dimensions), plus `DigitalSourceType: TrainedAlgorithmicMedia` IPTC label for AI-generated product images (Merchant Center requirement) |
 | **seo-content** | Product description E-E-A-T and uniqueness analysis |
-| **seo-dataforseo** | Organic keyword rankings for gap analysis |
+| **seo-ahrefs** | Organic keyword rankings for gap analysis (primary) |
+| **seo-dataforseo** | Merchant (Shopping, Amazon) data; organic rankings when Ahrefs is not connected |
 | **seo-technical** | Core Web Vitals for product pages (LCP on hero image) |
 | **seo-hreflang** | Region-specific result units: in the EEA, product and (since 2026-09-18) local business queries can show aggregator and supplier units; the EEA, South Africa and Türkiye also have structured data carousels, each with its own eligibility rules (documented 2026-09-08) |
 | **seo-google** | GSC indexation + Performance data for product URLs (NOT Merchant Center feed validation, that is done in Merchant Center / the **Merchant API**; the legacy Content API for Shopping sunsets 2026-08-18) |

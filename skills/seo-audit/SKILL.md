@@ -30,7 +30,8 @@ metadata:
    - `seo-maps` -- Geo-grid rank tracking, GBP audit, review intelligence, competitor radius mapping (spawn when Local Service detected AND DataForSEO MCP available)
    - `seo-google` -- CWV field data (CrUX), URL indexation (GSC), organic traffic (GA4) (spawn when Google API credentials detected via `"${CLAUDE_PLUGIN_ROOT}/scripts/claude-seo" run google_auth.py --check`)
    - `seo-matomo` -- Matomo Reporting API: organic traffic, landing pages, device / country splits, referrer analysis (spawn when Matomo credentials detected via `"${CLAUDE_PLUGIN_ROOT}/scripts/claude-seo" run matomo_auth.py --check`; runs alongside `seo-google` when both are configured, or as a GA4 alternative when GA4 is not)
-   - `seo-backlinks` -- Backlink profile data: DA/PA, referring domains, anchor text, toxic links (spawn when Moz or Bing API credentials detected via `"${CLAUDE_PLUGIN_ROOT}/scripts/claude-seo" run backlinks_auth.py --check`, or always include Common Crawl domain-level metrics)
+   - `seo-backlinks` -- Backlink profile data: DR/DA, referring domains, anchor text, toxic links (spawn when the Ahrefs MCP is connected, or Moz or Bing API credentials are detected via `"${CLAUDE_PLUGIN_ROOT}/scripts/claude-seo" run backlinks_auth.py --check`, or always include Common Crawl domain-level metrics)
+   - `seo-ahrefs` -- Authority, ranked keywords, top pages and organic competitors from Ahrefs (spawn when `mcp__ahrefs__*` tools are available; skip silently otherwise)
    - `seo-cluster` -- Semantic clustering analysis (spawn when content strategy signals detected: blog, pillar pages, topic clusters)
    - `seo-sxo` -- Search experience analysis: page-type mismatch, user stories, persona scoring (always include in full audits)
    - `seo-drift` -- Drift analysis: compare against stored baseline (spawn when drift baseline exists for the URL via `"${CLAUDE_PLUGIN_ROOT}/scripts/claude-seo" run drift_history.py <url>`)
@@ -166,9 +167,22 @@ Write `{domain}-audit/audit-data.json` with this shape so `"${CLAUDE_PLUGIN_ROOT
 - **Medium**: Optimization opportunity (fix within 1 month)
 - **Low**: Nice to have (backlog)
 
+## Ahrefs Integration (Optional, primary live-data source)
+
+If `mcp__ahrefs__*` tools are available, spawn the `seo-ahrefs` agent alongside the
+other subagents for domain authority, ranked keywords, top pages and organic
+competitors, and pass an approved unit budget (default 10,000 units for a full
+audit; check `ahrefs_costs.py today` first and lower it near the daily limit).
+`seo-backlinks` uses Ahrefs for the link profile at the same time, so do not ask
+`seo-ahrefs` for link data. Calls served from the Product Metrics cache cost
+nothing (rules: `${CLAUDE_PLUGIN_ROOT}/skills/seo/references/ahrefs.md`). If the site has an
+Ahrefs Site Audit project (`mcp__ahrefs__site-audit-projects`, free),
+`mcp__ahrefs__site-audit-issues` is an optional cross-check for the crawl
+findings (50 units per call).
+
 ## DataForSEO Integration (Optional)
 
-If DataForSEO MCP tools are available, spawn the `seo-dataforseo` agent alongside existing subagents to enrich the audit with live data: real SERP positions, backlink profiles with spam scores, on-page analysis (Lighthouse), business listings, and AI visibility checks (ChatGPT scraper, LLM mentions).
+If DataForSEO MCP tools are available (and Ahrefs is not, for the data both cover), spawn the `seo-dataforseo` agent alongside existing subagents to enrich the audit with live data: real SERP positions, backlink profiles with spam scores, on-page analysis (Lighthouse), business listings, and AI visibility checks (ChatGPT scraper, LLM mentions).
 
 ## Google API Integration (Optional)
 
