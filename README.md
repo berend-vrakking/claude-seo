@@ -386,6 +386,25 @@ is not. Every paid call passes a unit gate (`scripts/ahrefs_costs.py`).
 Setup, units and the optional cache layer: [extensions/ahrefs/docs/AHREFS-SETUP.md](extensions/ahrefs/docs/AHREFS-SETUP.md).
 DataForSEO remains available as an optional extension; nothing requires it.
 
+### OpenSEO: shared memory, reports, keywords and crawler
+
+Claude SEO is the only skill layer: it decides what to analyse and writes the
+findings. When an [OpenSEO](https://github.com/berend-vrakking/open-seo) MCP server
+is connected (`mcp__openseo__*` tools), it is the shared back end:
+
+| Claude SEO (skills and agents) | OpenSEO (MCP back end) |
+|---|---|
+| Analysis, scoring, recommendations, local report files | Project memory: business overview, goal, competitors, key pages, research log |
+| Ahrefs calls for keywords, SERPs, rankings and links | Saved reports (one per job, replaced in place) |
+| Fetch-based checks: robots, headers, rendering, schema, CWV | Saved keyword list per project |
+| Search Console, GA4, PSI and CrUX through its own Google connection | Site crawler (`run_site_audit`) and audit history |
+| Tracked positions from Ahrefs Rank Tracker | Ahrefs response cache and stored history (optional hooks) |
+
+Skills find the project for the site, read its context and research log before
+buying research, save finished reports and chosen keywords back, and append to
+the research log. Without OpenSEO every skill behaves exactly as before. Rules:
+[skills/seo/references/openseo.md](skills/seo/references/openseo.md).
+
 ### Banana: AI image generation
 
 SEO image generation (OG previews, blog heroes, product photos, infographics) via the [Claude Banana](https://github.com/AgriciDaniel/banana-claude) Creative Director pipeline.

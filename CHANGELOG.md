@@ -47,6 +47,26 @@ DataForSEO stays an optional extension; nothing requires it.
   server, and installs the agent and references.
 - Counts: 27 sub-skills and 20 sub-agents (3 extension mirrors).
 
+#### OpenSEO as the shared back end
+
+- `skills/seo/references/openseo.md`: when the OpenSEO MCP server is
+  connected, skills run a project step (`list_projects`,
+  `get_project_context`, research log before buying research), save
+  reports (`list_reports`, `save_report`, replacing the matching report),
+  save chosen keywords (`list_saved_keywords`, `save_keywords`), crawl with
+  OpenSEO (`run_site_audit`, `get_audit_status`, `get_audit_issues`,
+  `get_audit_pages`, `list_site_audits`), and append to the research log.
+  Without OpenSEO nothing changes.
+- Report skills (audit, technical, content brief, cluster, backlinks, plan,
+  page, content, SXO, competitor pages, drift) save to the project; local
+  files are still written.
+- Tracked positions come from Ahrefs Rank Tracker (`rank-tracker-overview`,
+  free); skills offer to add saved keywords to the Rank Tracker project
+  only after the user confirms.
+- Search Console and GA4 stay on Claude SEO's own Google connection.
+  `tests/test_openseo_tool_names.py` checks OpenSEO tool names and grants and
+  rejects routing Google data or rank tracking through OpenSEO.
+
 #### Unchanged
 
 - Merchant / Shopping, Maps geo-grid, GBP, reviews and listings, YouTube,
