@@ -15,6 +15,23 @@ metadata:
 
 # Technical SEO Audit
 
+## Crawl Source
+
+When the OpenSEO MCP server is connected, crawl with OpenSEO (rules:
+`${CLAUDE_PLUGIN_ROOT}/skills/seo/references/openseo.md`, section 4) instead of following links with
+the plugin's own fetchers: reuse the `auditId` the audit orchestrator passed
+in, or start one with `mcp__openseo__run_site_audit` (no Lighthouse unless
+asked), poll `mcp__openseo__get_audit_status`, then read
+`mcp__openseo__get_audit_issues` and `mcp__openseo__get_audit_pages` for
+broken links, redirect chains, duplicate or missing titles and descriptions,
+canonicals, orphan and thin pages, indexability and crawl depth. Compare with
+the previous audit from `mcp__openseo__list_site_audits` and report new, fixed
+and persisting issues. The checks below that the crawler does not cover still
+run on the plugin's fetchers: robots.txt and AI-crawler rules, sitemap
+discovery, security headers, JavaScript rendering, mobile, Core Web Vitals
+field data, structured data and IndexNow. Without OpenSEO, or if its audit
+fails, crawl with the plugin's fetchers as before.
+
 ## Categories
 
 ### 1. Crawlability
