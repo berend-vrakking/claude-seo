@@ -260,6 +260,20 @@ it passes.
 ### Medium Priority (ongoing improvement)
 ### Link Building Opportunities (top 10)
 
+## OpenSEO Project and Report (Optional)
+
+When the OpenSEO MCP server is connected (`mcp__openseo__list_projects` is
+available), follow `${CLAUDE_PLUGIN_ROOT}/skills/seo/references/openseo.md`: run the project step
+before analysis (find the project, read `get_project_context` and its research
+log), then, once the report is final, call `mcp__openseo__list_reports` and
+`mcp__openseo__save_report` with `skill: "seo-backlinks"`, a title such as
+`Backlink Profile, Oct 7, 2026 (or Backlink Gap vs competitor.com, Oct 7, 2026)`, and a summary carrying the verdict, the Backlink Health Score (or INSUFFICIENT DATA), referring domains, and the top link opportunity.
+Pass the `reportId` of an existing report for the same subject to replace it.
+Keep writing the local output files as well. Finish with
+`update_project_context` (`appendResearchLog`). When run as a subagent of
+`/seo audit`, skip the save: the orchestrator saves one report.
+Without OpenSEO, skip this section.
+
 ## Error Handling
 
 | Error | Cause | Resolution |

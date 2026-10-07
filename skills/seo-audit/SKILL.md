@@ -205,6 +205,20 @@ Every entry cites a Google-owned URL. If `freshness.stale` is true, say the
 ledger may miss recent updates and check status.search.google.com before
 drawing conclusions. A date overlap is a hypothesis, never proof of cause.
 
+## OpenSEO Project and Report (Optional)
+
+When the OpenSEO MCP server is connected (`mcp__openseo__list_projects` is
+available), follow `${CLAUDE_PLUGIN_ROOT}/skills/seo/references/openseo.md`: run the project step
+before analysis (find the project, read `get_project_context` and its research
+log), then, once the report is final, call `mcp__openseo__list_reports` and
+`mcp__openseo__save_report` with `skill: "seo-audit"`, a title such as
+`Full SEO Audit, Oct 7, 2026`, and a summary carrying the verdict, the SEO Health Score, the top Critical fix, and category scores.
+Pass the `reportId` of an existing report for the same subject to replace it.
+Keep writing the local output files as well. Finish with
+`update_project_context` (`appendResearchLog`).
+This skill is the one that saves for a full audit: subagents do not save their own reports. Pass the `projectId` and the relevant project context (goal, competitors, key pages) into each subagent brief.
+Without OpenSEO, skip this section.
+
 ## Error Handling
 
 | Scenario | Action |

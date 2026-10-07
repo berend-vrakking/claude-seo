@@ -243,6 +243,20 @@ Without Ahrefs, use WebSearch for the SERP and competitor set and label volumes 
 
 With DataForSEO but no Ahrefs, use `serp_organic_live_advanced` for real SERP data and competitor analysis, `kw_data_google_ads_search_volume` for keyword volume, `dataforseo_labs_bulk_keyword_difficulty` for difficulty scores, `dataforseo_labs_search_intent` for intent classification, and `on_page_content_parsing` for competitor content extraction.
 
+## OpenSEO Project and Report (Optional)
+
+When the OpenSEO MCP server is connected (`mcp__openseo__list_projects` is
+available), follow `${CLAUDE_PLUGIN_ROOT}/skills/seo/references/openseo.md`: run the project step
+before analysis (find the project, read `get_project_context` and its research
+log), then, once the report is final, call `mcp__openseo__list_reports` and
+`mcp__openseo__save_report` with `skill: "seo-content-brief"`, a title such as
+`Content Brief: <target keyword>, Oct 7, 2026`, and a summary carrying the verdict, the target keyword with volume and difficulty, the recommended format and word count, and the top differentiator.
+Pass the `reportId` of an existing report for the same subject to replace it.
+Keep writing the local output files as well. Finish with
+`update_project_context` (`appendResearchLog`). When run as a subagent of
+`/seo audit`, skip the save: the orchestrator saves one report.
+Without OpenSEO, skip this section.
+
 ## Error Handling
 
 | Scenario | Action |
