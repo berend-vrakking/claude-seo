@@ -25,8 +25,8 @@ directory because hosted marketplaces reject one. Repository users run
 with a bare Python interpreter.
 
 Comprehensive SEO analysis across all industries (SaaS, local services,
-e-commerce, publishers, agencies). Orchestrates 25 sub-skills (22 core + 1 framework
-integration + 2 extension mirrors) and 19 sub-agents. A separate optional Firecrawl
+e-commerce, publishers, agencies). Orchestrates 26 sub-skills (22 core + 1 framework
+integration + 3 extension mirrors) and 20 sub-agents. A separate optional Firecrawl
 extension is also installable (see "Optional Extensions" below).
 
 ## Quick Reference
@@ -59,6 +59,7 @@ extension is also installable (see "Optional Extensions" below).
 | `/seo ecommerce <url>` | E-commerce SEO: product schema, marketplace intelligence |
 | `/seo matomo [command] [args]` | Matomo Reporting API: GA4 alternative or supplement (extension) |
 | `/seo firecrawl [command] <url>` | Full-site crawling and site mapping (extension) |
+| `/seo ahrefs [command] [query]` | Live keyword, SERP, ranking, competitor and link data via Ahrefs MCP (extension; primary data source) |
 | `/seo dataforseo [command]` | Live SEO data via DataForSEO (extension) |
 | `/seo image-gen [use-case] <description>` | AI image generation for SEO assets (extension) |
 | `/seo flow [stage] [url\|topic]` | FLOW framework: evidence-led prompts for Find, Leverage, Optimize, Win, or Local stages |
@@ -234,8 +235,8 @@ Weighted aggregate of all categories:
 
 ## Sub-Skills
 
-This skill orchestrates 25 sub-skills (22 core + 1 framework integration + 2 extension
-mirrors). The orchestrator itself (`seo`) is the 26th in `skills/`, but does not
+This skill orchestrates 26 sub-skills (22 core + 1 framework integration + 3 extension
+mirrors). The orchestrator itself (`seo`) is the 27th in `skills/`, but does not
 orchestrate itself, so it is not enumerated below.
 
 1. **seo-audit** -- Full website audit with parallel delegation
@@ -263,6 +264,7 @@ orchestrate itself, so it is not enumerated below.
 23. **seo-image-gen** -- AI image generation for SEO assets via Gemini (extension mirror)
 24. **seo-flow** -- FLOW framework integration (Find -> Leverage -> Optimize -> Win, 41 AI prompts, CC BY 4.0)
 25. **seo-agentic** -- Agent readiness: Lighthouse Agentic Browsing, accessibility tree for agents, AI agent access policy, llms.txt, Markdown, ai-catalog.json, WebMCP
+26. **seo-ahrefs** -- Keyword metrics and ideas, SERP overviews, ranked keywords, competitors, backlinks and referring domains via Ahrefs MCP, with a unit cost gate (extension mirror)
 
 ### Optional Extensions
 
@@ -305,6 +307,7 @@ For parallel analysis during audits:
 - `seo-drift` -- Baseline comparison (conditional: drift baseline exists for URL)
 - `seo-ecommerce` -- Product schema, marketplace intel (conditional: e-commerce detected)
 - `seo-flow` -- FLOW framework prompts (conditional: spawned for content strategy workflows)
+- `seo-ahrefs` -- Keyword metrics, SERPs, rankings, competitors, backlinks and referring domains via Ahrefs MCP (extension; primary live-data source when connected)
 - `seo-dataforseo` -- Live SERP, keyword, backlink, local SEO data (extension, optional)
 - `seo-image-gen` -- SEO image audit and generation plan (extension, optional)
 

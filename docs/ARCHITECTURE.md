@@ -6,7 +6,7 @@ Claude SEO follows Anthropic's official Claude Code skill specification with a m
 
 ## Directory Structure
 
-The plugin ships 26 sub-skills (22 core + 1 orchestrator + 1 framework integration + 2 extension mirrors) and 19 sub-agents (16 core + 1 framework integration + 2 extension mirrors).
+The plugin ships 27 sub-skills (22 core + 1 orchestrator + 1 framework integration + 3 extension mirrors) and 20 sub-agents (16 core + 1 framework integration + 3 extension mirrors).
 
 ```
 ~/.claude/plugins/.../claude-seo/
@@ -38,6 +38,7 @@ The plugin ships 26 sub-skills (22 core + 1 orchestrator + 1 framework integrati
 │   ├── seo-competitor-pages/   # Competitor comparison page generation
 │   ├── seo-google/             # Google SEO APIs (GSC, PSI, CrUX, GA4)
 │   ├── seo-flow/               # FLOW framework integration (CC BY 4.0)
+│   ├── seo-ahrefs/             # Ahrefs MCP mirror (extension surface)
 │   ├── seo-dataforseo/         # DataForSEO MCP mirror (extension surface)
 │   └── seo-image-gen/          # Banana MCP mirror (extension surface)
 │
@@ -59,6 +60,7 @@ The plugin ships 26 sub-skills (22 core + 1 orchestrator + 1 framework integrati
     ├── seo-ecommerce.md        # Product schema, marketplace intelligence
     ├── seo-google.md           # GSC, PSI, CrUX, GA4 analyst
     ├── seo-flow.md             # FLOW framework prompt selection
+    ├── seo-ahrefs.md           # Ahrefs MCP mirror
     ├── seo-dataforseo.md       # DataForSEO MCP mirror
     └── seo-image-gen.md        # Banana MCP mirror
 ```

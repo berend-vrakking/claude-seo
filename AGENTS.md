@@ -54,9 +54,9 @@ in case a recipe needs a specific call.
 
 ## Overview
 
-Claude SEO is a Tier 4 SEO analysis skill with 26 sub-skills (22 core + 1 orchestrator +
-1 framework integration + 2 extension mirrors), 19 sub-agents (16 core + 1 framework
-integration + 2 extension mirrors), and 61 Python execution scripts.
+Claude SEO is a Tier 4 SEO analysis skill with 27 sub-skills (22 core + 1 orchestrator +
+1 framework integration + 3 extension mirrors), 20 sub-agents (16 core + 1 framework
+integration + 3 extension mirrors), and 61 Python execution scripts.
 
 ## Quick Reference
 
@@ -91,7 +91,7 @@ integration + 2 extension mirrors), and 61 Python execution scripts.
 | `/seo dataforseo [cmd]` | Live SEO data via DataForSEO (extension) |
 | `/seo image-gen [use-case]` | AI image generation for SEO assets (extension) |
 | `/seo firecrawl [cmd] <url>` | Full-site crawling and site mapping (extension) |
-| `/seo ahrefs [cmd] <target>` | Ahrefs backlink and keyword data (extension) |
+| `/seo ahrefs [cmd] <target>` | Ahrefs keyword, SERP, ranking, competitor and link data (extension; primary data source) |
 | `/seo bing [cmd] <url>` | Bing Webmaster data and IndexNow (extension) |
 | `/seo profound [cmd]` | LLM brand-citation tracking (extension) |
 | `/seo seranking [cmd]` | AI share-of-voice tracking (extension) |
@@ -139,7 +139,7 @@ bash install.sh
 ## Architecture
 
 ```
-skills/                    # 26 sub-skills (auto-discovered)
+skills/                    # 27 sub-skills (auto-discovered)
   seo/SKILL.md            # Main orchestrator + routing
   seo-cluster/            # Semantic clustering (v1.9.0)
   seo-sxo/                # Search Experience Optimization (v1.9.0)
@@ -164,9 +164,10 @@ skills/                    # 26 sub-skills (auto-discovered)
   seo-programmatic/       # Programmatic SEO
   seo-competitor-pages/   # Competitor pages
   seo-flow/               # FLOW framework integration
+  seo-ahrefs/             # Ahrefs (extension)
   seo-dataforseo/         # DataForSEO (extension)
   seo-image-gen/          # AI images (extension)
-agents/                    # 19 subagents
+agents/                    # 20 subagents
 scripts/                   # 61 Python scripts, including the managed runtime
 schema/                    # JSON-LD templates
 extensions/                # 9 MCP extensions: DataForSEO, Firecrawl, Banana, Ahrefs, SE Ranking, Profound, Bing Webmaster, Matomo, Unlighthouse

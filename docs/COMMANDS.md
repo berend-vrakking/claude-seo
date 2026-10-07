@@ -673,14 +673,47 @@ Live SEO data via DataForSEO MCP server (extension). 23 data commands across 9 A
 
 ---
 
-### `/seo ahrefs [command] <url|topic>`
+### `/seo ahrefs [command] <domain|keyword>`
 
-Ahrefs API metrics (extension). **Prerequisites:** Ahrefs extension installed (`./extensions/ahrefs/install.sh`).
+Live keyword, SERP, ranking, competitor and link data via the Ahrefs MCP server
+(extension; the primary data source for these when connected). **Prerequisites:**
+the `ahrefs` MCP server connected (project `.mcp.json` or
+`./extensions/ahrefs/install.sh`). Every paid call passes the unit gate in
+`ahrefs_costs.py`; results served by the Product Metrics cache cost nothing.
+
+**Keywords and SERP:**
 ```
-/seo ahrefs metrics <url>       # DR/UR, referring-domain count, organic traffic estimate
-/seo ahrefs backlinks <url>     # Top referring domains, anchor distribution, follow/nofollow ratio
-/seo ahrefs organic <url>       # Organic keywords, ranking distribution, traffic by country
-/seo ahrefs content <topic>     # Content Explorer top results, social shares, referring domains
+/seo ahrefs volume <kw1,kw2,...>        # Volume, difficulty, CPC, intent, traffic potential
+/seo ahrefs keywords <seed>             # Keyword ideas (matching, related, suggestions)
+/seo ahrefs questions <seed>            # Question keywords
+/seo ahrefs trend <keyword>             # Volume history and volume by country
+/seo ahrefs serp <keyword>              # SERP overview (Ahrefs snapshot, top 10)
+```
+
+**Domains and competitors:**
+```
+/seo ahrefs metrics <domain>            # DR, referring domains, organic traffic and keywords
+/seo ahrefs organic <domain>            # Ranked keywords
+/seo ahrefs top-pages <domain>          # Pages by organic traffic
+/seo ahrefs competitors <domain>        # Organic competitors
+/seo ahrefs keyword-gap <domain> <competitor>
+/seo ahrefs batch <domain1> <domain2>   # Up to 100 domains in one call
+/seo ahrefs history <domain>            # Traffic, DR and referring-domain trends
+```
+
+**Links:**
+```
+/seo ahrefs backlinks <domain>          # Backlinks (one per domain) and anchors
+/seo ahrefs refdomains <domain>         # Referring domains with DR and first/last seen
+/seo ahrefs link-gap <domain> <competitor>
+/seo ahrefs broken <domain>             # Broken backlinks to reclaim
+```
+
+**Content and units:**
+```
+/seo ahrefs content <keyword>           # Topics the ranking pages cover (1000 units)
+/seo ahrefs usage                       # Units used and left this month (free)
+/seo ahrefs costs today|summary|config  # Local unit ledger and approval thresholds
 ```
 
 ---
@@ -785,7 +818,7 @@ Multi-page Lighthouse audit via Unlighthouse (extension, MIT, no API quota). **P
 | `/seo dataforseo [command]` | Live SEO data (extension) |
 | `/seo image-gen [use-case] <desc>` | AI image generation (extension) |
 | `/seo firecrawl [command] <url>` | Full-site crawling (extension) |
-| `/seo ahrefs [command] <url>` | Backlinks, organic keywords, and content data via the official Ahrefs MCP (extension) |
+| `/seo ahrefs [command] <domain\|keyword>` | Keyword metrics, SERPs, rankings, competitors, backlinks and referring domains via Ahrefs MCP (extension; primary data source) |
 | `/seo seranking [command]` | AI Share-of-Voice across ChatGPT, Gemini, Perplexity, AI Overviews, AI Mode (extension) |
 | `/seo profound [command]` | LLM citation tracking with time-series data (extension) |
 | `/seo bing [command] <url>` | Bing Webmaster Tools + IndexNow URL submission (extension) |
