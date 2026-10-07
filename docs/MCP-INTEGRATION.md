@@ -67,11 +67,11 @@ The MCP ecosystem for SEO has matured significantly. These are production-ready 
 
 | Tool | Package / Endpoint | Type | Notes |
 |------|-------------------|------|-------|
-| **Ahrefs** | `@ahrefs/mcp` | Official | Launched July 2025. Supports local and remote modes. Backlinks, keywords, site audit data. |
+| **Ahrefs** | `https://api.ahrefs.com/mcp/mcp` (remote, Bearer key) | Official extension (primary data source) | Keywords Explorer, SERP Overview, Site Explorer, Site Audit, Rank Tracker and GSC tools named after API v3 paths. Install: `./extensions/ahrefs/install.sh` or a project `.mcp.json`. See [setup](../extensions/ahrefs/docs/AHREFS-SETUP.md). |
 | **Semrush** | `https://mcp.semrush.com/v1/mcp` | Official (remote) | Full API access via remote MCP endpoint. Domain analytics, keyword research, backlink data. |
 | **Google Search Console** | `mcp-server-gsc` | Community | By ahonn. Search performance, URL inspection, sitemaps. |
 | **PageSpeed Insights** | `mcp-server-pagespeed` | Community | By enemyrr. Lighthouse audits, CWV metrics, performance scoring. |
-| **DataForSEO** | `dataforseo-mcp-server` | Official extension | 9 modules, 79 tools, 23 commands. Install: `./extensions/dataforseo/install.sh`. See [extension docs](../extensions/dataforseo/README.md). |
+| **DataForSEO** | `dataforseo-mcp-server` | Official extension (optional) | 9 modules, 79 tools, 23 commands. Install: `./extensions/dataforseo/install.sh`. See [extension docs](../extensions/dataforseo/README.md). |
 | **kwrds.ai** | kwrds MCP server | Community | Keyword research, search volume, difficulty scoring. |
 | **SEO Review Tools** | SEO Review Tools MCP | Community | Site auditing and on-page analysis API. |
 

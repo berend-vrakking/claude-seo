@@ -1,10 +1,13 @@
 #!/usr/bin/env bash
 # Claude SEO: Ahrefs extension installer.
 #
-# Wires the official @ahrefs/mcp server into ~/.claude.json and
-# copies the seo-ahrefs mirror skill into ~/.claude/skills/.
+# Registers the official remote Ahrefs MCP server
+# (https://api.ahrefs.com/mcp/mcp, Authorization: Bearer <MCP key>) in
+# ~/.claude.json and copies the seo-ahrefs mirror skill and agent into
+# ~/.claude/. Skip the MCP step if your project's .mcp.json already
+# registers a server named "ahrefs": the skills only need the tools.
 #
-# Prereq: an Ahrefs API token. Get one at https://ahrefs.com/api.
+# Prereq: an Ahrefs MCP / API v3 key (Ahrefs account settings).
 set -euo pipefail
 
 main() {
@@ -21,9 +24,6 @@ main() {
     command -v python3 >/dev/null 2>&1 || {
         echo "✗ Python 3 required."; exit 1;
     }
-    command -v npx >/dev/null 2>&1 || {
-        echo "✗ Node 18+ / npx required."; exit 1;
-    }
 
     if [ ! -d "${SKILL_DIR}/seo" ]; then
         echo "✗ claude-seo base plugin not installed."
@@ -35,19 +35,18 @@ main() {
     # `./install.sh` and `curl | bash` invocations.
     SOURCE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" >/dev/null 2>&1 && pwd)"
 
-    read -rsp "Ahrefs API token: " AHREFS_TOKEN
+    read -rsp "Ahrefs MCP key: " AHREFS_TOKEN
     echo
     if [ -z "${AHREFS_TOKEN}" ]; then
         echo "✗ No token provided."; exit 1;
     fi
 
-    # Pre-warm the package so the first MCP invocation isn't slow.
-    echo "→ Pre-warming @ahrefs/mcp..."
-    npx --yes --package=@ahrefs/mcp@0.0.11 mcp --help >/dev/null 2>&1 || true
-
-    mkdir -p "${SKILL_DIR}/seo-ahrefs"
+    mkdir -p "${SKILL_DIR}/seo-ahrefs/references" "${HOME}/.claude/agents"
     cp "${SOURCE_DIR}/skills/seo-ahrefs/SKILL.md" "${SKILL_DIR}/seo-ahrefs/SKILL.md"
-    echo "✓ Installed skill: ${SKILL_DIR}/seo-ahrefs/SKILL.md"
+    cp "${SOURCE_DIR}/skills/seo-ahrefs/references/"*.md "${SKILL_DIR}/seo-ahrefs/references/"
+    cp "${SOURCE_DIR}/agents/seo-ahrefs.md" "${HOME}/.claude/agents/seo-ahrefs.md"
+    echo "✓ Installed skill: ${SKILL_DIR}/seo-ahrefs/"
+    echo "✓ Installed agent: ${HOME}/.claude/agents/seo-ahrefs.md"
 
     # Merge MCP config into ~/.claude.json atomically.
     mkdir -p "$(dirname "${MCP_CONFIG_JSON}")"
@@ -68,9 +67,9 @@ if os.path.exists(path):
     except json.JSONDecodeError:
         sys.exit(f"✗ {path} is not valid JSON. Nothing was changed; fix it and rerun.")
 data.setdefault("mcpServers", {})["ahrefs"] = {
-    "command": "npx",
-    "args": ["--yes", "--package=@ahrefs/mcp@0.0.11", "mcp"],
-    "env": {"AHREFS_API_TOKEN": token},
+    "type": "http",
+    "url": "https://api.ahrefs.com/mcp/mcp",
+    "headers": {"Authorization": f"Bearer {token}"},
 }
 fd, tmp = tempfile.mkstemp(dir=os.path.dirname(path) or ".",
                           prefix=".settings.", suffix=".json")
@@ -88,7 +87,7 @@ PY
 
     echo
     echo "Done. Open a new Claude Code session and run:"
-    echo "  /seo ahrefs metrics https://example.com"
+    echo "  /seo ahrefs metrics example.com"
     echo
     echo "Full docs: extensions/ahrefs/docs/AHREFS-SETUP.md"
 }

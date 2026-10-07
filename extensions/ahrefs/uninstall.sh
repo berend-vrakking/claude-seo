@@ -10,6 +10,12 @@ if [ -d "${SKILL_DIR}" ]; then
     echo "✓ Removed ${SKILL_DIR}"
 fi
 
+AGENT_FILE="${HOME}/.claude/agents/seo-ahrefs.md"
+if [ -f "${AGENT_FILE}" ]; then
+    rm -f "${AGENT_FILE}"
+    echo "✓ Removed ${AGENT_FILE}"
+fi
+
 if [ -f "${MCP_CONFIG_JSON}" ]; then
     python3 - "${MCP_CONFIG_JSON}" <<'PY'
 import json, os, sys, tempfile

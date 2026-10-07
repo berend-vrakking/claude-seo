@@ -291,11 +291,13 @@ extensions/
 │   ├── uninstall.ps1
 │   └── skills/seo-firecrawl/SKILL.md
 │
-├── ahrefs/                   # Ahrefs MCP for backlinks + organic data
+├── ahrefs/                   # Remote Ahrefs MCP: keywords, SERPs, rankings, links (primary data source)
 │   ├── install.sh
 │   ├── install.ps1
 │   ├── uninstall.sh
 │   ├── skills/seo-ahrefs/SKILL.md
+│   ├── skills/seo-ahrefs/references/   # tool-catalog.md, cost-tiers.md
+│   ├── agents/seo-ahrefs.md
 │   └── docs/AHREFS-SETUP.md
 │
 ├── seranking/                # SE Ranking AI Share-of-Voice tracking
@@ -334,7 +336,7 @@ extensions/
 | **DataForSEO** | `dataforseo-mcp-server@2.8.10` | Live SERP data, keyword research, backlinks, on-page analysis, business listings, AI visibility, LLM mention tracking |
 | **Banana Image Gen** | `@ycse/nanobanana-mcp@1.1.1` | AI image generation for SEO assets via Gemini (OG images, hero images, product photos, infographics, batch) |
 | **Firecrawl** | `firecrawl-mcp@3.11.0` | Full-site crawling and URL discovery for audits |
-| **Ahrefs** | `@ahrefs/mcp@0.0.11` | Backlinks and organic keyword data via the official `@ahrefs/mcp` server |
+| **Ahrefs** | remote `https://api.ahrefs.com/mcp/mcp` | Primary source for keyword metrics, SERPs, ranked keywords, competitors, backlinks and referring domains; unit gate in `ahrefs_costs.py` |
 | **SE Ranking** | SE Ranking API | AI Share-of-Voice across ChatGPT, Gemini, Perplexity, AI Overviews, and AI Mode |
 | **Profound** | Profound API | LLM citation tracking with time-series data |
 | **Bing Webmaster** | Bing Webmaster Tools API | Bing Webmaster Tools + IndexNow URL submission |

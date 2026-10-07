@@ -155,3 +155,19 @@ def test_python_invocations_carry_no_secret_even_across_continuations(rel: Path)
         if "python3 -" in line and "<<'PY'" in line:
             args = line.split("python3 -", 1)[1].split("<<", 1)[0]
             assert not re.search(r"KEY|TOKEN|PASSWORD|SECRET|USERNAME", args.replace("CONFIG", "")), (rel, line)
+
+
+def test_ahrefs_installer_registers_the_remote_http_server(tmp_path: Path) -> None:
+    """The Ahrefs extension registers the remote server, not a local npx one."""
+    settings = tmp_path / "settings.json"
+    result = _run(tmp_path, "extensions/ahrefs/install.sh", "key-123", settings)
+    assert result.returncode == 0, result.stderr
+    entry = json.loads(settings.read_text(encoding="utf-8"))["mcpServers"]["ahrefs"]
+    assert entry == {
+        "type": "http",
+        "url": "https://api.ahrefs.com/mcp/mcp",
+        "headers": {"Authorization": "Bearer key-123"},
+    }
+    ps1 = (ROOT / "extensions/ahrefs/install.ps1").read_text(encoding="utf-8")
+    assert "url = 'https://api.ahrefs.com/mcp/mcp'" in ps1
+    assert "npx" not in ps1
