@@ -78,6 +78,19 @@ intentionally omits absolute paths and environment values. If any
 `"${CLAUDE_PLUGIN_ROOT}/scripts/claude-seo" run` command reports that setup is
 required, suggest `/seo setup` and do not improvise a `pip install`.
 
+## OpenSEO Project Memory
+
+When the OpenSEO MCP server is connected (`mcp__openseo__list_projects` is
+available), every command that works on a site or a keyword set runs the
+project step from `references/openseo.md` first: find the project for the
+site (`list_projects`; `create_project` only after the user confirms), read
+`get_project_context`, and check its research log, saved keywords and saved
+reports before buying new research. Subagents receive the `projectId` and the
+relevant context in their brief. At the end, the orchestrator (not each
+subagent) saves the report with `list_reports` then `save_report`, and records
+the work with `update_project_context` (`appendResearchLog`; competitors and key
+pages only when the user confirmed them). Without OpenSEO, nothing changes.
+
 ## Orchestration Logic
 
 When the user invokes `/seo audit`, delegate to subagents in parallel:
@@ -94,7 +107,7 @@ When the user invokes `/seo audit`, delegate to subagents in parallel:
 11. If e-commerce detected, also spawn seo-ecommerce agent
 12. If drift baseline exists for this URL (`"${CLAUDE_PLUGIN_ROOT}/scripts/claude-seo" run drift_history.py <url>`), also spawn seo-drift agent
 13. Always include seo-sxo in full audits (search experience applies to all sites)
-14. Collect results and generate unified report with SEO Health Score (0-100)
+14. Collect results and generate unified report with SEO Health Score (0-100); with OpenSEO connected, save it to the project (see "OpenSEO Project Memory")
 15. **Synthesize via the 10-principle framework** (see "Synthesis Methodology" below), walk PERCEIVE → ANALYZE → VALIDATE → ACT before bucketing findings into Critical / High / Medium / Low
 16. Create prioritized action plan with dependency sequencing + falsifiability per recommendation
 17. **Offer PDF report**: "Generate a professional PDF report? Use `/seo google report full`"
@@ -209,6 +222,7 @@ Load these on-demand as needed (do NOT load all at startup):
 - `references/local-search-behavior.md`: Voice, AI search impact on local, Local Pack structure, proximity
 - `references/local-schema-types.md`: LocalBusiness subtypes, industry-specific schema and citation sources
 - `references/local-schema-multilocation.md`: Multi-location schema pattern, deprecated local schema
+- `references/openseo.md`: OpenSEO as the shared back end: project step (`list_projects`, `get_project_context`), saving reports (`list_reports`, `save_report`), saved keywords (`list_saved_keywords`, `save_keywords`), the crawler (`run_site_audit` and friends), and the research log
 - `references/ahrefs.md`: Ahrefs MCP calling guide shared by every skill that reads keyword, SERP, backlink, competitor or ranked-keyword data (availability check and fallback, parameters, unit cost gate, cache layer)
 
 Maps-specific references (loaded by seo-maps skill, not at startup):
