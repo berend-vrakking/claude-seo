@@ -96,12 +96,13 @@ Skip this section when no `mcp__openseo__ahrefs_*` tool is present.
   `mcp__openseo__ahrefs_cache_bypass {"tool": "<tool>", "args": {<same args>}}`,
   then repeat the identical Ahrefs call.
 - "What changed since last time" questions (positions, keyword metrics, top
-  pages, backlinks, referring domains, domain metrics): query stored rows first
-  with `mcp__openseo__ahrefs_history {"kind": ..., "target"?, "keyword"?,
-  "country"?, "since"?, "until"?, "limit"?}` instead of buying two snapshots.
-  The kinds follow the cache's row tables (`organic_keywords`, `keyword_metrics`,
-  `top_pages`, `backlinks`, `refdomains`, `domain_metrics`); confirm them in
-  the tool's schema.
+  pages, backlinks, referring domains, domain metrics, tracked keywords): query
+  stored rows first with `mcp__openseo__ahrefs_history {"kind": ..., "target"?,
+  "keyword"?, "country"?, "since"?, "until"?, "limit"?}` instead of buying two
+  snapshots. The kinds follow the cache's row tables (`organic_keywords`,
+  `keyword_metrics`, `top_pages`, `backlinks`, `refdomains`, `domain_metrics`,
+  `rank_tracker`; for `rank_tracker`, `target` is the Rank Tracker project id);
+  confirm them in the tool's schema.
 
 ## 5. Task map
 
