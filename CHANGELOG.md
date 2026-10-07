@@ -7,6 +7,52 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Unreleased: Ahrefs port
+
+Ahrefs becomes the primary source for keyword research, keyword metrics,
+SERPs, backlinks, referring domains, competitors and ranked keywords.
+DataForSEO stays an optional extension; nothing requires it.
+
+#### Added
+
+- `skills/seo-ahrefs` and `agents/seo-ahrefs.md` (mirrored in
+  `extensions/ahrefs/`): the Ahrefs counterpart of seo-dataforseo, with a
+  tool catalog and cost tiers checked against the Ahrefs API v3 spec.
+- `skills/seo/references/ahrefs.md`: the one calling guide every ported
+  skill links to (availability check and fallback, parameters, unit cost
+  gate, and the Product Metrics cache layer: cached denials,
+  `ahrefs_cached_result`, `ahrefs_cache_bypass`, `ahrefs_history`).
+- `scripts/ahrefs_costs.py`: unit estimate (`max(50, rows x per-row
+  units)`, field costs from the spec), approve / needs_approval / blocked
+  gate, plan row caps, and a locked ledger. Tests in
+  `tests/test_ahrefs_costs.py`.
+- `tests/test_ahrefs_tool_names.py`: every Ahrefs tool named in skills,
+  agents and docs must be one of the 132 API paths; agent grants and
+  mirrors are pinned.
+
+#### Changed
+
+- seo-backlinks uses Ahrefs first for every section; Moz, Bing Webmaster,
+  Keywords Everywhere, Common Crawl and DataForSEO are fallbacks.
+  `validate_backlink_report.py` accepts `ahrefs_data` as a scoreable source.
+- seo-cluster, seo-sxo, seo-content-brief, seo-content, seo-plan, seo-page,
+  seo-images and seo-ecommerce (organic side) read keyword, SERP, ranking
+  and competitor data from Ahrefs, with WebSearch as the fallback.
+- Full audits spawn seo-ahrefs when Ahrefs is connected; seo-technical
+  adds Ahrefs broken backlinks and Site Audit as optional cross-checks.
+- Agents that call Ahrefs (seo-ahrefs, seo-backlinks, seo-cluster,
+  seo-sxo) are granted `mcp__ahrefs__*` and the three OpenSEO cache tools.
+- `extensions/ahrefs` registers the remote HTTP server
+  (`https://api.ahrefs.com/mcp/mcp`, Bearer key) instead of a local npx
+  server, and installs the agent and references.
+- Counts: 27 sub-skills and 20 sub-agents (3 extension mirrors).
+
+#### Unchanged
+
+- Merchant / Shopping, Maps geo-grid, GBP, reviews and listings, YouTube,
+  WHOIS and tech stack, Lighthouse, and the Google APIs (GSC, GA4, CrUX,
+  PSI) keep their current providers.
+
 ## [2.4.2] - 2026-10-04
 
 seo-cockpit, Google sign-in through your own account, and a schema-hook fix.

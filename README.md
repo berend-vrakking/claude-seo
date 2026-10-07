@@ -161,12 +161,13 @@ claude
 | `/seo maps [command]` | Maps intelligence (geo-grid, GBP audit, reviews, competitors) |
 | `/seo hreflang <url>` | Hreflang / i18n SEO audit and generation |
 | `/seo google [command]` | Google SEO APIs (GSC, PageSpeed, CrUX, Indexing, GA4, PDF reports) |
-| `/seo backlinks <url>` | Backlink profile analysis (Moz, Bing, Common Crawl) |
+| `/seo backlinks <url>` | Backlink profile analysis (Ahrefs; free fallbacks: Moz, Bing, Common Crawl) |
 | `/seo cluster <keyword>` | SERP-based semantic clustering |
 | `/seo sxo <url>` | Search Experience Optimization (page-type, user stories, personas) |
 | `/seo drift baseline \| compare \| history <url>` | SEO drift monitoring with SQLite snapshots |
 | `/seo ecommerce <url>` | E-commerce SEO and marketplace intelligence |
 | `/seo flow [stage]` | FLOW framework prompts (CC BY 4.0, evidence-led) |
+| `/seo ahrefs [command]` | Keyword metrics, SERPs, rankings, competitors, backlinks via Ahrefs MCP (extension; primary data source) |
 | `/seo image-gen [use-case]` | AI image generation for SEO assets (extension) |
 | `/seo seranking [command]` | AI Share-of-Voice across ChatGPT, Gemini, Perplexity, AI Overviews, AI Mode (extension) |
 | `/seo profound [command]` | LLM citation tracking with time-series data (extension) |
@@ -367,6 +368,23 @@ curl -fsSL https://raw.githubusercontent.com/AgriciDaniel/claude-seo/main/uninst
 ## Extensions
 
 Optional MCP servers add live data to the audit pipeline. The plugin core works without any of them; each extension ships its own installer and docs under `extensions/<name>/`.
+
+### Ahrefs: primary live-data source
+
+Keyword research and metrics, SERP overviews, ranked keywords, top pages,
+organic competitors, backlinks and referring domains come from the remote
+Ahrefs MCP server when it is connected. Skills check for `mcp__ahrefs__*`
+tools first and fall back to WebSearch and the free backlink sources when it
+is not. Every paid call passes a unit gate (`scripts/ahrefs_costs.py`).
+
+```bash
+# Either register the server in your project's .mcp.json (see the setup doc), or:
+./extensions/ahrefs/install.sh
+/seo ahrefs metrics example.com
+```
+
+Setup, units and the optional cache layer: [extensions/ahrefs/docs/AHREFS-SETUP.md](extensions/ahrefs/docs/AHREFS-SETUP.md).
+DataForSEO remains available as an optional extension; nothing requires it.
 
 ### Banana: AI image generation
 
