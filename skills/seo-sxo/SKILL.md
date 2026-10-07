@@ -50,7 +50,8 @@ well-optimized it is.
 
 Read `references/page-type-taxonomy.md` for classification rules.
 
-1. Search Google for the target keyword (WebSearch)
+1. Get the top 10 for the target keyword: `mcp__ahrefs__serp-overview-serp-overview`
+   when Ahrefs is connected (see "Ahrefs Integration" below), else WebSearch
 2. For each of the top 10 organic results, record:
    - URL and domain authority tier (brand / niche authority / unknown)
    - Page type (classify using taxonomy)
@@ -162,14 +163,23 @@ Read `references/wireframe-templates.md` for templates.
    - YES: "Add pricing CTA with annual savings badge below hero, linking to /pricing#enterprise"
 4. Output as semantic HTML section outline with annotations
 
-## DataForSEO Integration
+## Ahrefs Integration (primary)
 
-If DataForSEO MCP tools are available:
+If `mcp__ahrefs__*` tools are available (rules: `${CLAUDE_PLUGIN_ROOT}/skills/seo/references/ahrefs.md`):
 
-1. **Before any API call**, run cost estimate and confirm with user
-2. Use `serp_organic_live_advanced` for precise SERP data (positions, features, snippets)
-3. Use `kw_data_google_ads_search_volume` for search volume and competition metrics
-4. Fall back to WebSearch if DataForSEO unavailable -- note reduced precision in output
+1. **Before any paid call**, run `ahrefs_costs.py check` and confirm with the user on `needs_approval`
+2. `mcp__ahrefs__serp-overview-serp-overview` (`top_positions=10`,
+   `select=position,url,title,type,page_type,domain_rating`) for positions, SERP
+   features (`type`) and Ahrefs' AI page-type labels; check `update_date`
+3. `mcp__ahrefs__keywords-explorer-overview` (`select=keyword,volume,difficulty,intents,cpc`)
+   for volume, difficulty and intent
+4. Fall back to WebSearch if Ahrefs is unavailable, blocked by the unit gate, or
+   has no stored SERP for the keyword; note reduced precision in output
+
+## DataForSEO Integration (optional)
+
+With DataForSEO but no Ahrefs: `serp_organic_live_advanced` for SERP data and
+`kw_data_google_ads_search_volume` for volume, after `dataforseo_costs.py check`.
 
 ## SXO Score vs SEO Health Score
 
@@ -236,7 +246,7 @@ The SXO score is **separate** from the main SEO Health Score.
 | WebSearch returns <5 results | Proceed with available data, note limited sample |
 | SERP has no organic results (all ads) | Note highly commercial SERP, analyze ad copy only |
 | Target page is JavaScript-rendered | Note limitation, use available HTML content |
-| DataForSEO cost exceeds threshold | Fall back to WebSearch, notify user |
+| Ahrefs (or DataForSEO) cost exceeds threshold | Fall back to WebSearch, notify user |
 
 ## Quality Checklist
 

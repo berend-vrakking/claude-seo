@@ -86,9 +86,13 @@ Specific, actionable improvements with expected impact
 ### Schema Suggestions
 Ready-to-use JSON-LD code for detected opportunities
 
+## Ahrefs Integration (Optional, primary data source)
+
+If `mcp__ahrefs__*` tools are available (rules: `${CLAUDE_PLUGIN_ROOT}/skills/seo/references/ahrefs.md`), use `mcp__ahrefs__site-explorer-organic-keywords` with `mode=exact` on the URL (`select=keyword,best_position,volume,sum_traffic`, `limit=50`) for real positions, and `mcp__ahrefs__site-explorer-backlinks-stats` plus `mcp__ahrefs__site-explorer-refdomains` (`mode=exact`) for the page's link data. Without Ahrefs, report rankings and links as not measured.
+
 ## DataForSEO Integration (Optional)
 
-If DataForSEO MCP tools are available, use `serp_organic_live_advanced` for real SERP positions and `backlinks_summary` for backlink data and spam scores.
+With DataForSEO but no Ahrefs, use `serp_organic_live_advanced` for real SERP positions and `backlinks_summary` for backlink data and spam scores.
 
 ## Error Handling
 

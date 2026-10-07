@@ -113,9 +113,13 @@ Load from `assets/` directory:
 - Dependencies identified
 - Risk mitigation strategies
 
+## Ahrefs Integration (Optional, primary data source)
+
+If `mcp__ahrefs__*` tools are available (rules: `${CLAUDE_PLUGIN_ROOT}/skills/seo/references/ahrefs.md`), use `mcp__ahrefs__site-explorer-organic-competitors` for the real competitor set, `mcp__ahrefs__batch-analysis-batch-analysis` (`domain_rating`, `refdomains`, `org_traffic`, `org_keywords`) to size the site against them in one call, `mcp__ahrefs__site-explorer-organic-keywords` and `mcp__ahrefs__site-explorer-top-pages` for keyword and content gaps, and `mcp__ahrefs__keywords-explorer-overview` / `mcp__ahrefs__keywords-explorer-matching-terms` for keyword research. Gate each call with `ahrefs_costs.py check`. Without Ahrefs, plan from WebSearch and the site itself and mark traffic and volume figures as not measured.
+
 ## DataForSEO Integration (Optional)
 
-If DataForSEO MCP tools are available, use `dataforseo_labs_google_competitors_domain` and `dataforseo_labs_google_domain_intersection` for real competitive intelligence, `dataforseo_labs_bulk_traffic_estimation` for traffic estimates, `kw_data_google_ads_search_volume` and `dataforseo_labs_bulk_keyword_difficulty` for keyword research, and `business_data_business_listings_search` for local business data.
+With DataForSEO but no Ahrefs, use `dataforseo_labs_google_competitors_domain` and `dataforseo_labs_google_domain_intersection` for real competitive intelligence, `dataforseo_labs_bulk_traffic_estimation` for traffic estimates, `kw_data_google_ads_search_volume` and `dataforseo_labs_bulk_keyword_difficulty` for keyword research, and `business_data_business_listings_search` for local business data.
 
 ## Error Handling
 

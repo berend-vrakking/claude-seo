@@ -232,9 +232,13 @@ drawing conclusions. A date overlap is a hypothesis, never proof of cause.
 ### Issues Found
 ### Recommendations
 
+## Ahrefs Integration (Optional, primary data source)
+
+If `mcp__ahrefs__*` tools are available (rules: `${CLAUDE_PLUGIN_ROOT}/skills/seo/references/ahrefs.md`), use `mcp__ahrefs__site-explorer-organic-keywords` with `mode=exact` on the page URL (`select=keyword,best_position,volume,sum_traffic`) for what the page already ranks for, and `mcp__ahrefs__keywords-explorer-overview` (`select=keyword,volume,difficulty,intents`) for volume, difficulty and intent of its target keywords. Without Ahrefs, skip keyword metrics and say so.
+
 ## DataForSEO Integration (Optional)
 
-If DataForSEO MCP tools are available, use `kw_data_google_ads_search_volume` for real keyword volume data, `dataforseo_labs_bulk_keyword_difficulty` for difficulty scores, `dataforseo_labs_search_intent` for intent classification, and `content_analysis_summary` for content quality analysis.
+With DataForSEO but no Ahrefs, use `kw_data_google_ads_search_volume` for real keyword volume data, `dataforseo_labs_bulk_keyword_difficulty` for difficulty scores, `dataforseo_labs_search_intent` for intent classification, and `content_analysis_summary` for content quality analysis.
 
 ## Error Handling
 

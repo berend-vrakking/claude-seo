@@ -3,7 +3,7 @@ name: seo-images
 description: >
   Image optimization analysis for SEO and performance. Checks alt text, file
   sizes, formats, responsive images, lazy loading, CLS prevention, image SERP
-  rankings (via DataForSEO), and image file optimization (WebP/AVIF conversion,
+  rankings (via Ahrefs SERP overview, or DataForSEO), and image file optimization (WebP/AVIF conversion,
   IPTC/XMP metadata injection). Use when user says "image optimization",
   "alt text", "image SEO", "image size", "image audit", "optimize images",
   "image metadata", "image SERP", "convert to webp", or "image file optimize".
@@ -197,16 +197,19 @@ Sorted by file size impact (largest savings first):
 
 ## Image SERP Analysis
 
-When DataForSEO MCP is available, enhance the image audit with competitive data.
+When Ahrefs (or the optional DataForSEO extension) is available, enhance the image audit with competitive data.
 
 ### `/seo images serp <keyword>`
 
 Cross-reference on-page images with the image results visible in the Google SERP.
 
 **Workflow:**
-1. The pinned DataForSEO MCP server (2.8.10) has no Google Images SERP tool.
-   Use the `images` element of `serp_organic_live_advanced` (depth=100) when the
-   SERP has one, and say plainly when no image SERP data is available
+1. With Ahrefs: `mcp__ahrefs__serp-overview-serp-overview` with `type=image,image_th`
+   and `select=position,url,title,type` (rules: `${CLAUDE_PLUGIN_ROOT}/skills/seo/references/ahrefs.md`).
+   These are the image positions in the web SERP, not Google Images results.
+   With DataForSEO instead: the pinned server (2.8.10) has no Google Images SERP
+   tool; use the `images` element of `serp_organic_live_advanced` (depth=100).
+   Say plainly when no image SERP data is available
 2. Extract: top domains, image types, alt text patterns
 3. Output competitor image SERP landscape
 
@@ -222,7 +225,7 @@ Cross-reference on-page images with the image results visible in the Google SERP
 - **Format distribution**: WebP vs JPEG vs PNG in top results
 - **Opportunity score**: keywords where you have page rankings but no image presence
 
-If DataForSEO MCP is not available, inform user and suggest installing the extension.
+If neither Ahrefs nor DataForSEO is available, inform the user and point to `extensions/ahrefs/docs/AHREFS-SETUP.md`.
 
 ---
 
@@ -433,4 +436,4 @@ For maximum image SEO, run this pipeline on each image:
 | Images behind CDN or authentication | Note that image files could not be directly accessed for size analysis. Report available metadata (alt text, dimensions, format from markup) and flag inaccessible resources. |
 | exiftool not installed | Fall back to ImageMagick for metadata. Recommend: `sudo apt install libimage-exiftool-perl` |
 | cwebp not installed | Fall back to ImageMagick or FFmpeg for WebP conversion. Recommend: `sudo apt install webp` |
-| DataForSEO MCP not available | Skip Image SERP Analysis section. Note extension is not installed. |
+| Ahrefs and DataForSEO not available | Skip Image SERP Analysis section. Note that no SERP data source is connected. |

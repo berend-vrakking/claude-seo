@@ -228,13 +228,20 @@ When the user asks for "just an outline" or "content outline" instead of a full 
 [Full H2/H3 outline with word counts, format notes, FS targets, keyword guidance, and a 1-2 sentence writing note per section]
 ```
 
+## Ahrefs Integration (primary data source)
+
+If `mcp__ahrefs__*` tools are available, follow `${CLAUDE_PLUGIN_ROOT}/skills/seo/references/ahrefs.md` (unit gate, cached results, fallback) and use:
+- `mcp__ahrefs__keywords-explorer-overview` (`select=keyword,volume,difficulty,cpc,traffic_potential,intents,parent_topic`) for target and secondary keyword metrics
+- `mcp__ahrefs__keywords-explorer-matching-terms` with `terms=questions` for FAQ and H2 question candidates; `mcp__ahrefs__keywords-explorer-related-terms` (`terms=also_talk_about`) for subtopics
+- `mcp__ahrefs__serp-overview-serp-overview` (`top_positions=10`) for the competitor set, SERP features and page types
+- `mcp__ahrefs__site-explorer-organic-keywords` (`mode=exact` on the target URL, or the domain) for keywords the site already ranks for, to avoid cannibalization
+- `mcp__ahrefs__site-explorer-top-pages` on competitor domains for the pages that win traffic on the topic
+
+Without Ahrefs, use WebSearch for the SERP and competitor set and label volumes and difficulty "not measured".
+
 ## DataForSEO Integration (Optional)
 
-If DataForSEO MCP tools are available, use `serp_organic_live_advanced` for real SERP data and competitor analysis, `kw_data_google_ads_search_volume` for keyword volume, `dataforseo_labs_bulk_keyword_difficulty` for difficulty scores, `dataforseo_labs_search_intent` for intent classification, and `on_page_content_parsing` for competitor content extraction.
-
-## Ahrefs Integration (Optional)
-
-If Ahrefs MCP tools are available, use `keywords-explorer-overview` for keyword volume and difficulty, `serp-overview` for SERP analysis, `site-explorer-organic-keywords` for existing keyword rankings, and `site-explorer-top-pages` for competitor page performance.
+With DataForSEO but no Ahrefs, use `serp_organic_live_advanced` for real SERP data and competitor analysis, `kw_data_google_ads_search_volume` for keyword volume, `dataforseo_labs_bulk_keyword_difficulty` for difficulty scores, `dataforseo_labs_search_intent` for intent classification, and `on_page_content_parsing` for competitor content extraction.
 
 ## Error Handling
 

@@ -40,7 +40,13 @@ interactive cluster map visualizations.
 
 ### Step 1: Seed Keyword Expansion
 
-Expand the seed keyword into 30-50 variants using WebSearch:
+Expand the seed keyword into 30-50 variants. **With Ahrefs connected** (any
+`mcp__ahrefs__*` tool present; rules in `${CLAUDE_PLUGIN_ROOT}/skills/seo/references/ahrefs.md`), start from
+`mcp__ahrefs__keywords-explorer-matching-terms` (`terms=all`, then `terms=questions`),
+`mcp__ahrefs__keywords-explorer-related-terms` and
+`mcp__ahrefs__keywords-explorer-search-suggestions` with
+`select=keyword,volume,difficulty,parent_topic`, `limit=100`. `parent_topic`
+is a strong first grouping signal. Otherwise, or to fill gaps, use WebSearch:
 
 1. **Related searches**: Search the seed, extract "related searches" and "people also search for"
 2. **People Also Ask (PAA)**: Extract all PAA questions from SERP results
@@ -75,10 +81,17 @@ the full algorithm.
 - Only cross-check group boundary keywords
 - Skip pairs where both are long-tail variants of the same head term (assume same cluster)
 
-**DataForSEO integration:** If DataForSEO MCP is available, use `serp_organic_live_advanced`
-instead of WebSearch for SERP data. Run `"${CLAUDE_PLUGIN_ROOT}/scripts/claude-seo" run dataforseo_costs.py check serp_organic_live_advanced --count N`
-before each batch. If `"status": "needs_approval"`, show cost estimate and ask user.
-If `"status": "blocked"`, fall back to WebSearch.
+**Ahrefs integration (primary):** If Ahrefs is connected, use
+`mcp__ahrefs__serp-overview-serp-overview` (`top_positions=10`,
+`select=position,url,type`, about 50 units per keyword) instead of WebSearch,
+and keep only positions whose `type` includes `organic`. Run
+`"${CLAUDE_PLUGIN_ROOT}/scripts/claude-seo" run ahrefs_costs.py check serp-overview-serp-overview --rows 10 --select position,url,type`
+before each batch; multiply by the number of keywords for the batch total. If
+`needs_approval`, show the estimate and ask. If `blocked`, or Ahrefs returns no
+positions for a keyword (it has no stored SERP), use WebSearch for that keyword.
+
+**DataForSEO (optional extension):** with DataForSEO but no Ahrefs, use
+`serp_organic_live_advanced` gated by `dataforseo_costs.py check`.
 
 ### Step 3: Intent Classification
 
@@ -281,7 +294,8 @@ All outputs are written to the current working directory:
 | `seo-plan` | Import source: strategy import reads seo-plan output |
 | `seo-content` | Quality check: E-E-A-T validation of generated content |
 | `seo-schema` | Schema markup: Article, BreadcrumbList, ItemList for cluster pages |
-| `seo-dataforseo` | Data source: SERP data when DataForSEO MCP is available |
+| `seo-ahrefs` | Data source: keyword ideas, volumes and SERP overviews (primary) |
+| `seo-dataforseo` | Data source: SERP data when only DataForSEO MCP is available (optional) |
 | `seo-google` | Reporting: generate PDF report of cluster plan and scorecard |
 
 After cluster planning or execution completes, offer:
@@ -295,11 +309,11 @@ After cluster planning or execution completes, offer:
 |-------|-------|------------|
 | "No seed keyword provided" | Missing argument | Prompt user for seed keyword or URL |
 | "Insufficient keyword variants" | Expansion yielded < 15 keywords | Run second expansion pass with PAA questions |
-| "SERP data unavailable" | WebSearch and DataForSEO both failing | Retry after 30s; if persistent, use intent-only clustering with warning |
+| "SERP data unavailable" | Ahrefs, WebSearch and DataForSEO all failing | Retry after 30s; if persistent, use intent-only clustering with warning |
 | "No strategy file found" | `--from strategy` but no plan exists | Prompt user to run `/seo plan` first |
 | "cluster-plan.json not found" | Execute without planning | Prompt user to run `/seo cluster plan` first |
 | "claude-blog not installed" | Execute attempted without blog skill | Generate content briefs instead; suggest installation |
-| "DataForSEO budget exceeded" | Cost check returned "blocked" | Fall back to WebSearch; inform user |
+| "Ahrefs unit limit reached" | `ahrefs_costs.py check` returned "blocked" | Fall back to WebSearch; inform user |
 | "Duplicate primary keywords" | Cannibalization detected | Merge affected posts or reassign keywords |
 | "Orphan page detected" | Post missing incoming links | Add links from nearest cluster siblings |
 | "Resume state corrupted" | Mismatch between plan and output | Rebuild state from output directory scan |
@@ -311,7 +325,7 @@ After cluster planning or execution completes, offer:
 - All URLs fetched via `"${CLAUDE_PLUGIN_ROOT}/scripts/claude-seo" run render_page.py <url> --mode auto` (SPA-aware SSRF protection via `url_safety`)
 - No credentials stored or transmitted
 - Output files contain no PII or API keys
-- DataForSEO cost checks run before every API call
+- Ahrefs (and DataForSEO) cost checks run before every paid API call
 
 ## FLOW Framework Integration
 
