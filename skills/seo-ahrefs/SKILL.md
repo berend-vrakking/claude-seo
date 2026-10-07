@@ -160,6 +160,27 @@ protocol}`) and a `select` array (`domain_rating`, `refdomains`, `org_traffic`,
 | `seo-ecommerce` | organic-keywords for the organic side of the gap analysis |
 | `seo-audit` | spawns the `seo-ahrefs` agent for authority, rankings and competitor context |
 
+## OpenSEO Project and Saved Keywords (Optional)
+
+With OpenSEO connected, run the project step first (find the project, read
+`get_project_context`), then (rules: `${CLAUDE_PLUGIN_ROOT}/skills/seo/references/openseo.md`):
+
+1. Before research, read `mcp__openseo__list_saved_keywords` (filter with
+   `search` on the seed) and the project's research log. Reuse what is there
+   instead of buying the same metrics again.
+2. After the user accepts the result, save the keywords the user picks from `volume`, `keywords` or `questions` results with
+   `mcp__openseo__save_keywords` (up to 100 per call, with `metrics` mapped
+   from Ahrefs: volume, difficulty, CPC in USD, intent). Ask before adding tags.
+3. Then offer to track them: add them to the site's Ahrefs Rank Tracker
+   project with `mcp__ahrefs__management-project-keywords` only after the user
+   confirms (it changes their Ahrefs project and may count against keyword limits).
+4. For `organic`, `metrics` and `history` on the project's own site, read
+   tracked positions from Ahrefs Rank Tracker (`mcp__ahrefs__management-projects`,
+   then `mcp__ahrefs__rank-tracker-overview`; free) and record what was
+   researched with `update_project_context` (`appendResearchLog`).
+
+Without OpenSEO, skip this section.
+
 ## Error Handling
 
 | Situation | Action |

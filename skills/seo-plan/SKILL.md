@@ -121,6 +121,22 @@ If `mcp__ahrefs__*` tools are available (rules: `${CLAUDE_PLUGIN_ROOT}/skills/se
 
 With DataForSEO but no Ahrefs, use `dataforseo_labs_google_competitors_domain` and `dataforseo_labs_google_domain_intersection` for real competitive intelligence, `dataforseo_labs_bulk_traffic_estimation` for traffic estimates, `kw_data_google_ads_search_volume` and `dataforseo_labs_bulk_keyword_difficulty` for keyword research, and `business_data_business_listings_search` for local business data.
 
+## Saved Keywords (OpenSEO, Optional)
+
+With OpenSEO connected (rules: `${CLAUDE_PLUGIN_ROOT}/skills/seo/references/openseo.md`, section 3):
+
+1. Before research, read `mcp__openseo__list_saved_keywords` (filter with
+   `search` on the seed) and the project's research log. Reuse what is there
+   instead of buying the same metrics again.
+2. After the user accepts the result, save the target keywords of the plan's first phases with
+   `mcp__openseo__save_keywords` (up to 100 per call, with `metrics` mapped
+   from Ahrefs: volume, difficulty, CPC in USD, intent). Ask before adding tags.
+3. Then offer to track them: add them to the site's Ahrefs Rank Tracker
+   project with `mcp__ahrefs__management-project-keywords` only after the user
+   confirms (it changes their Ahrefs project and may count against keyword limits).
+
+Without OpenSEO, skip this section.
+
 ## OpenSEO Project and Report (Optional)
 
 When the OpenSEO MCP server is connected (`mcp__openseo__list_projects` is
