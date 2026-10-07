@@ -74,6 +74,28 @@ chose or the plan targets:
 - `tags` (for example the cluster or page a keyword belongs to): ask the user
   first, as the tool requires. Default to no tags.
 
+### Tracked positions: Ahrefs Rank Tracker
+
+Positions for tracked keywords come from Ahrefs Rank Tracker, not from
+OpenSEO's own rank tracker. The site's tracked keywords live in one Ahrefs Rank
+Tracker project. All of these calls are free (no API units):
+
+- Find the project: `mcp__ahrefs__management-projects` (optional
+  `has_keywords: true`); match `url` to the site and take `project_id`.
+- Read positions: `mcp__ahrefs__rank-tracker-overview {"project_id": ...,
+  "device": "mobile"|"desktop", "date": "<today>", "date_compared"?: ...,
+  "select": "keyword,position,position_prev,position_diff,url,volume,traffic,serp_features,tags", "limit": 100}`.
+- After `save_keywords`, **offer** to add the same keywords to the Rank
+  Tracker project with `mcp__ahrefs__management-project-keywords` (PUT;
+  `project_id`, body `keywords: [{keyword, tags?}]` and `locations: [{country,
+  language?, location_id?}]`). Ask the user to confirm first: it changes their
+  Ahrefs project and may count against Rank Tracker keyword limits.
+- "What changed" for tracked keywords: prefer
+  `mcp__openseo__ahrefs_history {"kind": "rank_tracker", "target": "<project_id>"}`
+  (stored snapshots) before reading two dates from Rank Tracker.
+- Search Console, read through Claude SEO's own Google connection
+  (`gsc_query.py`), stays the ground truth for clicks and impressions.
+
 ## 4. Crawler (seo-technical, seo-audit)
 
 Use OpenSEO's crawler as the crawl source when available, instead of the

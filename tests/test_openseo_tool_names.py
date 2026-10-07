@@ -5,8 +5,9 @@ crawler) behind the Claude SEO skills. tests/fixtures/openseo_mcp_tools.txt
 lists the tool names the OpenSEO MCP server registers; refresh it when
 OpenSEO adds or renames a tool.
 
-Search Console and GA4 stay on Claude SEO's own Google connection, so no
-skill or agent may route them through OpenSEO's Google tools.
+Search Console and GA4 stay on Claude SEO's own Google connection, and tracked
+positions come from Ahrefs Rank Tracker (OpenSEO's rank tracker needs
+DataForSEO), so no skill or agent may use those OpenSEO tools.
 """
 
 from __future__ import annotations
@@ -18,8 +19,9 @@ ROOT = Path(__file__).resolve().parents[1]
 FIXTURE = ROOT / "tests" / "fixtures" / "openseo_mcp_tools.txt"
 # A trailing `_*` is a family wildcard in prose, not a tool name.
 TOOL_RE = re.compile(r"mcp__openseo__([a-z_]+[a-z])(?![a-z_*])")
-GOOGLE_VIA_OPENSEO = re.compile(
-    r"mcp__openseo__(?:get_search_console_\w+|inspect_urls|get_search_opportunities|get_google_analytics_\w+)"
+NOT_VIA_OPENSEO = re.compile(
+    r"mcp__openseo__(?:get_search_console_\w+|inspect_urls|get_search_opportunities|get_google_analytics_\w+"
+    r"|\w*rank_track\w*)"
 )
 
 
@@ -46,12 +48,12 @@ def test_every_referenced_openseo_tool_exists() -> None:
     assert not missing, "not OpenSEO tools:\n" + "\n".join(missing)
 
 
-def test_google_data_does_not_route_through_openseo() -> None:
+def test_google_data_and_rank_tracking_do_not_route_through_openseo() -> None:
     offenders = [
         f"{path.relative_to(ROOT)}:{n}"
         for path in _docs()
         for n, line in enumerate(path.read_text(encoding="utf-8").splitlines(), 1)
-        if GOOGLE_VIA_OPENSEO.search(line)
+        if NOT_VIA_OPENSEO.search(line)
     ]
     assert not offenders, offenders
 
