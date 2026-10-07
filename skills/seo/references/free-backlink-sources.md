@@ -1,7 +1,8 @@
 # Free Backlink Data Sources
 
 Reference for the seo-backlinks skill. Loaded on demand when analyzing backlinks
-with free sources.
+with free sources. When the Ahrefs MCP is connected it is the primary source and
+these are fallbacks or cross-checks; see `ahrefs.md` in this directory.
 
 ## Source Comparison
 
@@ -11,7 +12,8 @@ with free sources.
 | **Bing Webmaster** | API key (free) | Verified sites only | ★★★☆☆ | ~15% (Bing index) | Generous |
 | **Common Crawl** | None (public) | Yes | ★★★☆☆ | ~25-40% domains | N/A |
 | **Verification Crawler** | None | Yes | ★★★★★ (binary) | N/A (checks known links) | 1 req/s per domain |
-| **DataForSEO** (paid) | API key | Yes | ★★★★★ | ~90%+ | Per plan |
+| **Ahrefs MCP** (paid, primary) | MCP key | Yes | ★★★★★ | ~90%+ | 60 req/min; units per plan |
+| **DataForSEO** (paid, optional) | API key | Yes | ★★★★★ | ~90%+ | Per plan |
 
 ## Confidence Weighting
 
@@ -19,6 +21,7 @@ When merging data from multiple sources, apply confidence weights to each metric
 
 | Source | Weight | Rationale |
 |--------|--------|-----------|
+| Ahrefs | 1.00 | Commercial-grade index, referring domains, anchors, history (spam signals 0.90) |
 | DataForSEO | 1.00 | Commercial-grade, real-time, comprehensive |
 | Verification Crawler | 0.95 | Direct observation (binary: link exists or not) |
 | Moz API | 0.85 | Large index (45.5T links), established metrics, 3-day update lag |
@@ -90,9 +93,10 @@ a report (`status: FAIL`) that carries a number in either case. See the
 - **Polite crawling:** 1-second delay between requests to same domain
 - **Best for:** Checking if known backlinks still exist, monitoring link health
 
-## When to Recommend DataForSEO Upgrade
+## When to Recommend a Commercial Source
 
-Suggest the paid DataForSEO extension when:
+Suggest connecting Ahrefs (primary; `extensions/ahrefs/docs/AHREFS-SETUP.md`), or
+the optional DataForSEO extension, when:
 - User needs **toxic link detection** beyond Moz's basic Spam Score
 - User needs **competitor gap analysis** at scale or against an unregistered
   domain (Bing comparison is limited to properties accessible to the account)

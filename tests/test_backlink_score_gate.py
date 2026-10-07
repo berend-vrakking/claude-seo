@@ -87,6 +87,28 @@ def test_score_is_allowed_once_a_scoreable_source_has_data() -> None:
     assert errors == []
 
 
+def test_ahrefs_data_is_a_scoreable_source() -> None:
+    """Ahrefs is the primary backlink source; its data unlocks a numeric score."""
+    result = vbr.validate_report({
+        "cc_data": {"rank": 1},
+        "ahrefs_data": {"domain_rating": 38, "live_refdomains": 412},
+        "scoring_factors": {"score": 71, "factors_with_data": 7, "total_factors": 7},
+    })
+
+    errors = [i for i in result["data"]["issues"] if i["severity"] == "error"]
+    assert errors == []
+
+
+def test_errored_ahrefs_call_does_not_unlock_scoring() -> None:
+    result = vbr.validate_report({
+        "cc_data": {"rank": 1},
+        "ahrefs_data": {"error": "Ahrefs not connected"},
+        "scoring_factors": {"score": 71},
+    })
+
+    assert result["status"] == "FAIL"
+
+
 def test_errored_source_does_not_count_as_available() -> None:
     """A Moz call that failed must not unlock scoring."""
     result = vbr.validate_report({

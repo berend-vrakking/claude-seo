@@ -325,7 +325,7 @@ def detect_tier() -> dict:
     Tier 0: No API keys (Common Crawl + Verification Crawler always available)
     Tier 1: Moz API key configured
     Tier 2: Moz + Bing configured
-    Tier 3: All + DataForSEO MCP available (checked externally)
+    Tier 3: All + Ahrefs MCP (primary) or DataForSEO MCP available (checked externally)
 
     Returns:
         Dictionary with tier, description, capabilities, missing.
@@ -348,7 +348,7 @@ def detect_tier() -> dict:
                 "Common Crawl domain-level graph",
                 "Backlink verification crawler",
             ] + (["Keywords Everywhere Open PageRank (0-10 domain rank)"] if has_kwe else []),
-            "missing": "Add DataForSEO extension for premium backlink data (paid)",
+            "missing": "Connect the Ahrefs MCP for commercial backlink data (paid; primary source)",
         }
     elif has_moz:
         return {
@@ -496,13 +496,16 @@ OPTIONAL: KEYWORDS EVERYWHERE / OPEN PAGERANK (free signup, single-metric fallba
   No referring domains, anchors, or top pages -- use Moz for those. A
   lightweight Profile Overview fallback when Moz isn't configured.
 
-PREMIUM: DATAFORSEO EXTENSION (paid, most comprehensive)
-----------------------------------------------------------
-  For full commercial-grade backlink data, install the DataForSEO extension:
-    ./extensions/dataforseo/install.sh
+PREMIUM: AHREFS MCP (paid, primary when connected)
+----------------------------------------------------
+  Connect the remote Ahrefs MCP server (https://api.ahrefs.com/mcp/mcp) in a
+  project .mcp.json or with ./extensions/ahrefs/install.sh. Skills detect it
+  by tool availability (mcp__ahrefs__*), not by this script.
 
-  Provides: 35+ trillion links, real-time updates, toxic scoring,
-            anchor text, competitor gap analysis, link velocity.
+  Provides: referring domains with DR, anchors, backlinks, broken links,
+            competitor link gaps, and referring-domain history.
+
+  Optional alternative: the DataForSEO extension (./extensions/dataforseo/install.sh).
 
 VERIFY CONFIGURATION:
   python scripts/backlinks_auth.py --check

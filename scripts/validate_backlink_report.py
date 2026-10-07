@@ -16,6 +16,8 @@ Input: JSON file with backlink analysis data containing keys:
   - parsed_data: Homepage parse_html results
   - moz_data: Moz API results (optional)
   - bing_data: Bing Webmaster results (optional)
+  - ahrefs_data: Ahrefs MCP results (optional)
+  - dataforseo_data: DataForSEO MCP results (optional)
 """
 
 import argparse
@@ -235,7 +237,7 @@ def validate_health_score(scoring_factors: dict) -> list:
 # Sources that can support a numeric backlink health score. Common Crawl is
 # deliberately absent: it provides rank/presence signals only, not the
 # referring-domain quality, anchor, or toxicity data a score implies.
-SCOREABLE_SOURCES = ("moz_data", "bing_data", "dataforseo_data")
+SCOREABLE_SOURCES = ("ahrefs_data", "moz_data", "bing_data", "dataforseo_data")
 
 # Finding sources that mean "we did not measure this".
 UNMEASURED_SOURCES = ("not-assessed", "not_assessed")
@@ -334,7 +336,7 @@ def validate_report(report_data: dict) -> dict:
 
     Args:
         report_data: Dictionary with keys: cc_data, verify_data, parsed_data,
-                     moz_data (optional), bing_data (optional), scoring_factors (optional)
+                     ahrefs_data, moz_data, bing_data, dataforseo_data (optional), scoring_factors (optional)
 
     Returns:
         Validation result with status, issues list, and pass/fail per category.
