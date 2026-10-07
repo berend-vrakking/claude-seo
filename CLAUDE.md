@@ -90,7 +90,7 @@ claude-seo/
     seo-flow.md                  # FLOW framework integration
   hooks/                           # Quality gate hooks
     hooks.json                   # PostToolUse schema validation
-  scripts/                         # 60 Python execution scripts
+  scripts/                         # 61 Python execution scripts
     google_auth.py               # Credential management (OAuth, SA, API key, 4-tier detection)
     backlinks_auth.py            # Backlink API credential management (Moz, Bing)
     moz_api.py                   # Moz Link Explorer API (DA/PA, spam, domains, anchors)
@@ -118,6 +118,7 @@ claude-seo/
     drift_compare.py             # SEO drift comparison engine (17 rules)
     drift_report.py              # SEO drift HTML report generator
     drift_history.py             # SEO drift history query
+    ahrefs_costs.py              # Ahrefs API unit estimation, approval gate, and budget tracking
     dataforseo_costs.py          # DataForSEO cost estimation and budget tracking
     dataforseo_merchant.py       # Google Shopping / Amazon data fetching
     dataforseo_normalize.py      # DataForSEO response normalization utility
