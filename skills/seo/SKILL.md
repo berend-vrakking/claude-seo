@@ -206,6 +206,7 @@ Load these on-demand as needed (do NOT load all at startup):
 - `references/local-search-behavior.md`: Voice, AI search impact on local, Local Pack structure, proximity
 - `references/local-schema-types.md`: LocalBusiness subtypes, industry-specific schema and citation sources
 - `references/local-schema-multilocation.md`: Multi-location schema pattern, deprecated local schema
+- `references/ahrefs.md`: Ahrefs MCP calling guide shared by every skill that reads keyword, SERP, backlink, competitor or ranked-keyword data (availability check and fallback, parameters, unit cost gate, cache layer)
 
 Maps-specific references (loaded by seo-maps skill, not at startup):
 - `references/maps-geo-grid.md`, `references/maps-gbp-checklist.md`, `references/maps-api-endpoints.md`, `references/maps-free-apis.md`
